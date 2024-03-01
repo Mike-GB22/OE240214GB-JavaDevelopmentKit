@@ -14,8 +14,8 @@ public class Main {
     private static List<Philosof> guests;
 
     public static void main(String[] args) {
-        int countSitzPlatz = 10;
-        int countOfGuest = 15;
+        int countSitzPlatz = 2;
+        int countOfGuest = 2;
         CountDownLatch cdl = new CountDownLatch(countSitzPlatz);
 
         

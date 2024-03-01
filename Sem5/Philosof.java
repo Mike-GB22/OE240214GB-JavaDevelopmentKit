@@ -53,9 +53,9 @@ public class Philosof implements Runnable{
         status = "Наелся";
     }
 
-    public void toEat(){
+    public synchronized void toEat(){
         while(sitzplatz == null) {
-            System.out.printf("Гость: %s, не может есть, так как у него нет места за столом", name);
+            System.out.printf("\n - Гость: %s, не может есть, так как у него нет места за столом", name);
             status = "Стоит";
             try {
                 Thread.sleep(1000);
@@ -63,24 +63,23 @@ public class Philosof implements Runnable{
                 e.printStackTrace();
             }
         }
-        System.out.printf("Гость: %s, сидит на месте: %s, ест с помощью вилок: %s и %s", name, sitzplatz.getName(), leftFork, rightFork);        
-        status = String.format("Ест вилками: %s %s, на месте %s",  leftFork, rightFork, sitzplatz.getName());
-        
-        int timeToEat = rnd.nextInt(100, 3000);
-        try {
-            Thread.sleep(timeToEat);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        int timeToEat = rnd.nextInt(1000, 3000);        
 
-        System.out.printf("Гость: %s, закончил есть. Ел %d мс, сидит на месте %s, освободил вилки : %s и %s", name, timeToEat, sitzplatz.getName(), leftFork, rightFork);        
+        synchronized(rightFork){synchronized(leftFork){
+            System.out.printf("\n -- Гость: %s, сидит на месте: %s, ест с помощью вилок: %s и %s", name, sitzplatz.getName(), leftFork, rightFork);        
+            status = String.format("Ест вилками: %s %s, на месте %s",  leftFork, rightFork, sitzplatz.getName());
+            
+            sleepAlitl(timeToEat);
+        }}
+
+        System.out.printf("\n --- Гость: %s, закончил есть. Ел %d мс, сидит на месте %s, освободил вилки : %s и %s", name, timeToEat, sitzplatz.getName(), leftFork, rightFork);        
         status = String.format("Закончил есть",  sitzplatz.getName());      
     }
 
     public void toThink(){
-        System.out.printf("Гость: %s, думает", name);  
+        System.out.printf("\n ---- Гость: %s, думает", name);  
         status = String.format("Думает, на месте %s",  sitzplatz.getName());      
+        sleepAlitl(3000);
     }
 
     public String getName(){
@@ -93,9 +92,17 @@ public class Philosof implements Runnable{
 
     @Override
     public String toString(){
-        return String.format("Гость: %s, сидит на месте: %s, доступны вилки: %s, %s. Статус: %s", name, sitzplatzName, leftFork, rightFork, status);
+        return String.format("Гость: %s, сидит на месте: %s, доступны вилки: %s и %s. Статус: %s", name, sitzplatzName, leftFork, rightFork, status);
     }
     
+    private void sleepAlitl(int timeToSleep){
+        try {
+            Thread.sleep(timeToSleep);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
 
 }

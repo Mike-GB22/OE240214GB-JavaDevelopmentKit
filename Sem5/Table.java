@@ -44,6 +44,7 @@ public class Table implements Iterable<SitzPlatz>{
         //Последнюю вилку делаем доступной как левую, для 0го места
         Fork lastFork = sitzplatzs.get(countSitzPlatz - 1).getRightFork();
         sitzplatzs.get(0).setLeftFork(lastFork);
+        sitzplatzs.get(0).getPhilosof().updateForksFromSitzPlatz();
         
     }
 
