@@ -5,6 +5,8 @@ import java.util.Random;
 
 public class CaseDorrs {
     private boolean doors[];
+    private String textCar = "CAR";
+    private String textNothing = " - ";
 
     public CaseDorrs(){
         this(3);
@@ -21,7 +23,7 @@ public class CaseDorrs {
     public String toString() {
         StringBuilder result = new StringBuilder("Case: ");
         for(int i = 0; i < doors.length; i++){
-            result.append(String.format("door %d: %s, ", i, (doors[i]?"CAR":" - ")));
+            result.append(String.format("door %d: %s, ", i, getDoorText(i)));
         }
         return result.substring(0,result.length()-2).toString();
     }
@@ -38,6 +40,14 @@ public class CaseDorrs {
         Random rnd = new Random();
         int door = doorsWithNothing.get(rnd.nextInt(1000)%doorsWithNothing.size());
         return door;
+    }
+
+    public boolean getDoor(int currentDoor){
+        return doors[currentDoor];
+    }
+
+    public String getDoorText(int currentDoor){
+        return doors[currentDoor]?textCar:textNothing;
     }
 
 }
